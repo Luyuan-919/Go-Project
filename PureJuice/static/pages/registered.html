@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>注册</title>
+    <link rel="stylesheet" href="../css/registered.css" />
+    <link rel="stylesheet" href="../css/iconfont.css" />
+    <style>
+        p{
+            text-align: center;
+        }
+    </style>
+    <script type="text/javascript" src="../script/jquery-1.7.2.js"></script>
+    <script>
+        $(function(){
+
+            $("#sub_btn").click(function(){
+            var username = $("#username").val();
+            var InvitationCode =  $("#Invitation_code").val();
+            var password = $("#password").val();
+            var againPassword = $("#againPassword").val();
+            //判断用户名是否为空
+            if(username == "" || InvitationCode == "" || password == "" || againPassword == ""){
+                $("#msg").text("有输入为空！");
+                document.getElementById("msg").style.color="red";
+                //取消默认行为
+                return false;
+            }
+            if (password != againPassword){
+                $("#msg").text("两次密码输入不一样！");
+                document.getElementById("msg").style.color="red";
+                //取消默认行为
+                return false;
+            }
+
+        });
+            $("#Invitation_code").change(function (){
+                var InvitationCode =  $(this).val();
+                var url = "/checkInvitation";
+                var param = {"InvitationCode":InvitationCode};
+                $.post(url,param,function (res){
+                    $("#msg").show();
+                    document.getElementById("msg").style.color="red";
+                    //将响应信息设置到span元素中
+                    $("#msg").html(res);
+                });
+            });
+            $("#username").change(function (){
+                var username =  $(this).val();
+                var usernameReg = /^[a-zA-Z0-9_-]{3,16}$/;
+                //验证是否符合规则
+                var flag = usernameReg.test(username);
+                if(!flag){
+                    $("#msg").show();
+                    document.getElementById("msg").style.color="red";
+                    $("#msg").text("请输入3-16位的字母、数字、下划线或减号的用户名！");
+                    return false;
+                }
+                var url = "/checkUserNameExist";
+                var param = {"username":username};
+                $.post(url,param,function (res){
+                    $("#msg").show();
+                    document.getElementById("msg").style.color="red";
+                    //将响应信息设置到span元素中
+                    $("#msg").html(res);
+                });
+            });
+
+            if("{{.}}"=="error1"){
+                //设置span标签中的文本值
+                $("#msg").text("邀请码无效！");
+                document.getElementById("msg").style.color="red";
+            }
+            if("{{.}}"=="error2"){
+                //设置span标签中的文本值
+                $("#msg").text("此账号已经被注册！");
+                document.getElementById("msg").style.color="red";
+            }
+            if("{{.}}"=="success"){
+                //设置span标签中的文本值
+                $("#msg").text("注册成功!");
+                document.getElementById("msg").style.color="red";
+            }
+
+
+
+        });
+
+
+    </script>
+</head>
+<body>
+<div><div id="bigBox">
+        <h1>Registered</h1>
+
+        <div class="form">
+            <form action="/registered" method="POST">
+                <div class="inputBox">
+                    <div class="inputText">
+                        <span class="iconfont icon-nickname"></span>
+                        <input type="text" placeholder="邀请码" tabindex="1" name="InvitationCode" id="Invitation_code"/>
+                    </div>
+                    <div class="inputText">
+                        <span class="iconfont icon-nickname"></span>
+                        <input type="text" placeholder="账号" tabindex="1" name="Username" id="username"/>
+                    </div>
+                    <div class="inputText">
+                        <span class="iconfont icon-visible"></span>
+                        <input type="password" placeholder="密码" tabindex="1" name="Password" id="password"/>
+                    </div>
+                    <div class="inputText">
+                        <span class="iconfont icon-visible"></span>
+                        <input type="password" placeholder="再次输入密码" tabindex="1" name="AgainPassword" id="againPassword"/>
+                    </div>
+                </div>
+                <br>
+                <input class="loginButton" type="submit" value="注册" id="sub_btn"/>
+            </form>
+            <form action="/home" method="GET">
+                <input class="loginButton" type="submit" value="返回主页" id="sub_btn"/>
+            </form>
+        </div>
+
+        <br>
+        <br>
+        <div class="msg_cont">
+            <span  class="errorMsg" id="msg"></span>
+        </div>
+    </div>
+    <br><br><br><br>
+    <footer>
+        <p>
+            <a href="https://beian.miit.gov.cn/" target="_blank">陕ICP备2021001831号</a><br>
+            <a href="https:www.luyuan158.top" target="_blank">Copyright © 2021 鹭渊</a>
+        </p>
+    </footer>
+</div>
+</body>
+</html>

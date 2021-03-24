@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<title>登录界面</title>
+		<link rel="stylesheet" href="../css/style.css" />
+		<link rel="stylesheet" href="../css/iconfont.css" />
+		<script type="text/javascript" src="../script/jquery-1.7.2.js"></script>
+		<style>
+			p{
+				text-align: center;
+			}
+		</style>
+		<script>
+			//相当于window.onlaod = function(){};
+			$(function(){
+				//给登录按钮绑定单击事件
+				$("#sub_btn").click(function(){
+					//获取用户输入的用户名
+					/*
+                        val()：用来获取或设置input中的value属性值
+                        对象.val()：获取value属性值
+                        对象.val("new Value")：设置value属性值
+                    */
+					var username = $("#username").val();
+					//判断用户名是否为空
+					if(username == ""){
+						$("#msg").text("用户名不能为空！");
+						document.getElementById("msg").style.color="red";
+						//取消默认行为
+						return false;
+					}
+					//获取用户输入的密码
+					var password = $("#password").val();
+					if(password == ""){
+						$("#msg").text("密码不能为空！");
+						document.getElementById("msg").style.color="red";
+						return false;
+					}
+				});
+				//切换span标签中的信息
+				if("{{.}}"=="用户名或密码不正确！"){
+					//设置span标签中的文本值
+					$("#msg").text("用户名或密码不正确！");
+					document.getElementById("msg").style.color="red";
+				}
+			});
+		</script>
+	</head>
+	<body>
+	<div><div id="bigBox">
+			<h1>Login</h1>
+
+			<div class="form">
+				<form action="/login" method="POST">
+					<div class="inputBox">
+						<div class="inputText">
+							<span class="iconfont icon-nickname"></span>
+							<input type="text" placeholder="Username" tabindex="1" name="username" id="username"/>
+						</div>
+						<div class="inputText">
+							<span class="iconfont icon-visible"></span>
+							<input type="password" placeholder="Password" tabindex="1" name="password" id="password"/>
+						</div>
+					</div>
+					<input class="loginButton" type="submit" value="登录" id="sub_btn"/>
+				</form>
+				<form action="/registeredHtml" method="POST">
+					<input class="registeredButton" type="submit" value="注册" id="sub_btn"/>
+				</form>
+			</div>
+
+			<br>
+			<div class="msg_cont">
+				<span  class="errorMsg" id="msg"></span>
+			</div>
+		</div>
+		<br><br><br><br>
+		<footer>
+			<p>
+				<a href="https://beian.miit.gov.cn/" target="_blank">陕ICP备2021001831号</a><br>
+				<a href="https:www.luyuan158.top" target="_blank">Copyright © 2021 鹭渊</a>
+			</p>
+		</footer>
+	</div>
+	</body>
+</html>
